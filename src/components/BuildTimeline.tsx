@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { buildJourney, updateDescription, addMediaAsset, removeMediaAsset } from "@/lib/buildJourneyData";
+import { buildJourney as defaultBuildJourney } from "@/lib/buildJourneyData";
 
 interface TimelineItem {
   day: number;
@@ -25,7 +25,20 @@ interface MediaAsset {
 }
 
 const BuildTimeline = () => {
-  const timelineItems: TimelineItem[] = buildJourney;
+  // Load from localStorage or use default data
+  const [timelineItems, setTimelineItems] = useState<TimelineItem[]>(() => {
+    const saved = localStorage.getItem('buildJourney');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error('Failed to parse saved build journey:', e);
+        return defaultBuildJourney;
+      }
+    }
+    return defaultBuildJourney;
+  });
+  
   const [editingDay, setEditingDay] = useState<number | null>(null);
   const [editDescription, setEditDescription] = useState<string>("");
   const [editTitle, setEditTitle] = useState<string>("");
@@ -45,13 +58,21 @@ const BuildTimeline = () => {
   };
 
   const handleEditSave = (day: number) => {
-    updateDescription(day, editDescription);
-    // Update title in the data
-    const entry = buildJourney.find(item => item.day === day);
-    if (entry) {
-      entry.title = editTitle;
-    }
-    setShowSaveButton(true);
+    setTimelineItems(prevItems => {
+      const updatedItems = prevItems.map(item => {
+        if (item.day === day) {
+          return {
+            ...item,
+            title: editTitle,
+            description: editDescription
+          };
+        }
+        return item;
+      });
+      // Save immediately to localStorage
+      localStorage.setItem('buildJourney', JSON.stringify(updatedItems));
+      return updatedItems;
+    });
     setEditingDay(null);
     setEditDescription("");
     setEditTitle("");
@@ -70,34 +91,69 @@ const BuildTimeline = () => {
       url: URL.createObjectURL(file),
       caption: ''
     };
-    addMediaAsset(day, mediaAsset);
-    setShowSaveButton(true);
+    setTimelineItems(prevItems => {
+      const updatedItems = prevItems.map(item => {
+        if (item.day === day) {
+          return {
+            ...item,
+            mediaAssets: [...(item.mediaAssets || []), mediaAsset]
+          };
+        }
+        return item;
+      });
+      // Save immediately to localStorage
+      localStorage.setItem('buildJourney', JSON.stringify(updatedItems));
+      return updatedItems;
+    });
     setShowMediaUpload(null);
   };
 
   const handleAddNewDay = () => {
     const newDay = Math.max(...timelineItems.map(item => item.day)) + 1;
-    const newEntry = {
+    const newEntry: TimelineItem = {
       day: newDay,
       date: new Date().toISOString().split('T')[0],
       title: newDayTitle,
       description: newDayDescription,
-      assetEmbed: null,
-      assetType: null,
+      assetEmbed: undefined,
+      assetType: undefined,
       assetUpload: null,
       isEditable: true,
       mediaAssets: []
     };
-    buildJourney.unshift(newEntry); // Add to beginning
-    setShowSaveButton(true);
+    setTimelineItems(prevItems => {
+      const updatedItems = [newEntry, ...prevItems];
+      // Save immediately to localStorage
+      localStorage.setItem('buildJourney', JSON.stringify(updatedItems));
+      return updatedItems;
+    });
     setNewDayTitle("");
     setNewDayDescription("");
     setShowAddDay(false);
   };
 
-  const handleSaveAll = () => {
-    localStorage.setItem('buildJourney', JSON.stringify(buildJourney));
-    setShowSaveButton(false);
+  const handleRemoveMedia = (day: number, assetId: string) => {
+    setTimelineItems(prevItems => {
+      const updatedItems = prevItems.map(item => {
+        if (item.day === day) {
+          return {
+            ...item,
+            mediaAssets: (item.mediaAssets || []).filter(asset => asset.id !== assetId)
+          };
+        }
+        return item;
+      });
+      // Save immediately to localStorage
+      localStorage.setItem('buildJourney', JSON.stringify(updatedItems));
+      return updatedItems;
+    });
+  };
+
+  const handleResetData = () => {
+    if (confirm('Are you sure you want to reset all changes? This will restore the original data.')) {
+      localStorage.removeItem('buildJourney');
+      setTimelineItems(defaultBuildJourney);
+    }
   };
 
   return (
@@ -121,11 +177,13 @@ const BuildTimeline = () => {
                   >
                     + Add New Day
                   </Button>
-                  {showSaveButton && (
-                    <Button onClick={handleSaveAll} className="bg-green-600 hover:bg-green-700">
-                      💾 Save All Changes
-                    </Button>
-                  )}
+                  <Button 
+                    onClick={handleResetData} 
+                    variant="outline"
+                    className="border-red-500 text-red-500 hover:bg-red-50"
+                  >
+                    🔄 Reset to Default
+                  </Button>
                 </div>
               )}
         </div>
@@ -304,7 +362,7 @@ const BuildTimeline = () => {
                               variant="destructive"
                               size="sm"
                               className="absolute top-2 right-2"
-                              onClick={() => removeMediaAsset(item.day, media.id)}
+                              onClick={() => handleRemoveMedia(item.day, media.id)}
                             >
                               ×
                             </Button>
