@@ -26,9 +26,9 @@ const About = () => {
             <h2 className="text-4xl md:text-5xl font-bold">About Me</h2>
             
             <p className="text-lg leading-relaxed text-muted-foreground">
-              I'm a hybrid AI Product Manager who bridges empathy, data and design
-              to ship zero→one products that matter. With experience in
-              entrepreneurship, engineering and growth, I partner with users,
+              I'm an AI Product Manager who bridges empathy, data and design
+              to ship zero → one products that matter. With entrepreneurial,
+              engineering and growth experience, I partner with users,
               designers and developers to deliver high-impact solutions.
             </p>
 

@@ -44,6 +44,12 @@ const Navbar = () => {
               Work
             </button>
             <button
+              onClick={() => scrollToSection("case-studies")}
+              className="text-foreground/70 hover:text-foreground transition-colors font-medium"
+            >
+              Case Studies
+            </button>
+            <button
               onClick={() => scrollToSection("about")}
               className="text-foreground/70 hover:text-foreground transition-colors font-medium"
             >

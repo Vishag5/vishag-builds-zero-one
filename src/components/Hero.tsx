@@ -17,18 +17,56 @@ const Hero = () => {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6 animate-fade-in">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
-              Building{" "}
-              <span className="gradient-text">zero → one</span>{" "}
-              products that blend AI, empathy and data.
+              AI Product Manager •{" "}
+              <span className="gradient-text">Sam Altman-Backed Delta Residency Cohort</span>
             </h1>
             
-            <div className="space-y-2">
+            <div className="space-y-3">
               <p className="text-xl text-muted-foreground">
-                AI Product Manager • Builder at Delta Residency 21-Day Challenge
+                Shipping Zero→One | HealthTech • FinTech • EdTech • SaaS
               </p>
-              <Badge className="bg-primary text-primary-foreground hover:bg-primary-hover">
-                Delta Residency – 21-Day Challenge
-              </Badge>
+              <div className="flex flex-wrap gap-2">
+                <a 
+                  href="https://www.linkedin.com/groups/15471022/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-block"
+                >
+                  <Badge className="bg-primary text-primary-foreground hover:bg-primary-hover cursor-pointer">
+                    Delta Residency
+                  </Badge>
+                </a>
+                <a 
+                  href="https://startupmission.kerala.gov.in/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-block"
+                >
+                  <Badge className="bg-primary text-primary-foreground hover:bg-primary-hover cursor-pointer">
+                    Kerala Startup Mission
+                  </Badge>
+                </a>
+                <a 
+                  href="https://www.linkedin.com/company/keralaph/posts/?feedView=all" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-block"
+                >
+                  <Badge className="bg-primary text-primary-foreground hover:bg-primary-hover cursor-pointer">
+                    Kerala Product Hunt
+                  </Badge>
+                </a>
+                <a 
+                  href="https://www.linkedin.com/company/tinkerhub/posts/?feedView=all" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-block"
+                >
+                  <Badge className="bg-primary text-primary-foreground hover:bg-primary-hover cursor-pointer">
+                    TinkerHub
+                  </Badge>
+                </a>
+              </div>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-4">

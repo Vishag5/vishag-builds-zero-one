@@ -39,6 +39,18 @@ const BuildTimeline = () => {
         "Validated approach with ADHD specialists. Incorporated evidence-based techniques for habit formation.",
     },
     {
+      day: "Day 15",
+      title: "Psychologist consultation sessions",
+      description:
+        "Validated approach with ADHD specialists. Incorporated evidence-based techniques for habit formation.",
+    },
+    {
+      day: "Day 18",
+      title: "Final prototype refinements",
+      description:
+        "Implemented final UX polish based on feedback. Prepared launch materials and onboarding flow.",
+    },
+    {
       day: "Day 21",
       title: "Launch MVP to pilot users",
       description:

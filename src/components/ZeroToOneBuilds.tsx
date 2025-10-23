@@ -9,11 +9,11 @@ const ZeroToOneBuilds = () => {
   const builds = [
     {
       title: "Rhythm – ADHD Companion App",
-      subtitle: "Women-first app built during Delta Residency 21-Day Challenge.",
+      subtitle: "Women-first app built during Delta Residency 21-Day Build-in-Public Challenge.",
       description:
-        "Built in public, co-designed with ADHD users and psychologists. Captures daily iterations, feedback loops and prototype jumps. Focused on creating a habit-building system specifically designed for neurodivergent women.",
+        "Built in public, co-designed with ADHD users and psychologists. Captures daily iterations, feedback loops and prototype leaps. Focused on creating a habit-building system specifically designed for neurodivergent women.",
       outcome:
-        "Participated in Delta Residency 21-Day Challenge under Sam Altman-backed program.",
+        "Selected for Delta Residency 21-Day Build-in-Public Challenge (Sam Altman-backed).",
       images: [rhythmLanding, rhythmWhiteboard],
       imageAlts: [
         "Rhythm ADHD companion app landing page interface",
