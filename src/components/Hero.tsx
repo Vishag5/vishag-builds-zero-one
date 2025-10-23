@@ -18,7 +18,7 @@ const Hero = () => {
           <div className="space-y-6 animate-fade-in">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
               AI Product Manager •{" "}
-              <span className="gradient-text">Sam Altman-Backed Delta Residency Cohort</span>
+              <span className="gradient-text">Sam Altman<br />Backed Delta Residency Cohort</span>
             </h1>
             
             <div className="space-y-3">
