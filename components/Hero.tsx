@@ -1,9 +1,12 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowRight } from "lucide-react";
 import React, { useState } from "react";
+import Image from "next/image";
 
 const Hero: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -28,7 +31,7 @@ const Hero: React.FC = () => {
 
   // Environment-based edit mode
   const isEditMode =
-    import.meta.env.VITE_EDIT_MODE === "true" || Boolean(import.meta.env.DEV);
+    process.env.NEXT_PUBLIC_EDIT_MODE === "true" || process.env.NODE_ENV === "development";
 
   const scrollToSection = (sectionId: string) => {
     const element = typeof document !== "undefined" && document.getElementById(sectionId);
@@ -197,10 +200,13 @@ const Hero: React.FC = () => {
           <div className="flex justify-center animate-slide-up">
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-accent/30 rounded-full blur-3xl"></div>
-              <img
+              <Image
                 src="/assets/vishag-portrait.jpg"
                 alt="Vishag Thacharakkal - AI Product Manager professional portrait"
                 className="relative rounded-full w-80 h-80 md:w-96 md:h-96 object-cover shadow-elevated border-4 border-white"
+                width={384}
+                height={384}
+                priority
               />
             </div>
           </div>

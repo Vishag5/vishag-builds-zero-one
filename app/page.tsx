@@ -9,7 +9,7 @@ import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
-const Index = () => {
+export default function Home() {
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -24,6 +24,4 @@ const Index = () => {
       <Footer />
     </div>
   );
-};
-
-export default Index;
+}
