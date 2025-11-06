@@ -109,7 +109,7 @@ const ZeroToOneBuilds = () => {
   const [showSaveButton, setShowSaveButton] = useState<boolean>(false);
   
   // Environment-based edit mode
-  const isEditMode = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_EDIT_MODE === 'true') || (typeof process !== 'undefined' && process.env.NODE_ENV === 'development');
+  const isEditMode = (process.env.NEXT_PUBLIC_EDIT_MODE === 'true') || (process.env.NODE_ENV === 'development');
 
   const handleEditStart = (buildId: string, build: BuildItem) => {
     setEditingBuild(buildId);
