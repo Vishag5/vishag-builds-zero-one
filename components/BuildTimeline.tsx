@@ -27,20 +27,32 @@ interface MediaAsset {
 }
 
 const BuildTimeline = () => {
+  // Coerce untyped JS data into our strict TS types
+  const toTyped = (items: any[]): TimelineItem[] =>
+    (items || []).map((item: any) => ({
+      ...item,
+      mediaAssets: (item.mediaAssets || []).map((m: any): MediaAsset => ({
+        id: String(m.id),
+        url: String(m.url),
+        caption: m.caption !== undefined ? String(m.caption) : undefined,
+        // Normalize to the allowed union values
+        type: m.type === 'video' ? 'video' : 'image',
+      })),
+    }));
   // Load from localStorage or use default data
   const [timelineItems, setTimelineItems] = useState<TimelineItem[]>(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem('buildJourney');
       if (saved) {
         try {
-          return JSON.parse(saved);
+          return toTyped(JSON.parse(saved));
         } catch (e) {
           console.error('Failed to parse saved build journey:', e);
-          return defaultBuildJourney;
+          return toTyped(defaultBuildJourney as any);
         }
       }
     }
-    return defaultBuildJourney;
+    return toTyped(defaultBuildJourney as any);
   });
   
   const [editingDay, setEditingDay] = useState<number | null>(null);
@@ -156,7 +168,7 @@ const BuildTimeline = () => {
   const handleResetData = () => {
     if (confirm('Are you sure you want to reset all changes? This will restore the original data.')) {
       localStorage.removeItem('buildJourney');
-      setTimelineItems(defaultBuildJourney);
+      setTimelineItems(toTyped(defaultBuildJourney as any));
     }
   };
 
