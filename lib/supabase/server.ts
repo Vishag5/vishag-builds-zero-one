@@ -9,18 +9,24 @@ export async function createClient() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        getAll() {
-          return cookieStore.getAll();
+        get(name: string) {
+          return cookieStore.get(name)?.value;
         },
-        setAll(cookiesToSet) {
+        set(name: string, value: string, options: any) {
           try {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
-            );
-          } catch {
-            // The `setAll` method was called from a Server Component.
-            // This can be ignored if you have middleware refreshing
-            // user sessions.
+            cookieStore.set({ name, value, ...options });
+          } catch (error) {
+            // The `cookies().set()` method can only be called in a Server Component or Route Handler.
+            // This error is typically thrown if you're trying to set a cookie in a Client Component
+            // or if the response headers have already been sent.
+            // For middleware, you'll typically modify the response directly.
+          }
+        },
+        remove(name: string, options: any) {
+          try {
+            cookieStore.set({ name, value: "", ...options });
+          } catch (error) {
+            // Same as above
           }
         },
       },

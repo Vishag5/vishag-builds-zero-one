@@ -6,6 +6,7 @@ import { ClientProviders } from "./client-providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   title: "Portfolio - Zero to One Builds",
   description: "Building innovative solutions from zero to one",
   openGraph: {
