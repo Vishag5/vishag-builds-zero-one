@@ -89,7 +89,7 @@ const BuildCard = ({
             <CarouselContent className="flex">
               {/* Render images as carousel items */}
               {images.map((image, index) => (
-                <CarouselItem key={`img-${index}`} className="basis-1/2">
+                <CarouselItem key={`img-${index}`} className="basis-full pl-4">
                   <div
                     className="relative aspect-video cursor-pointer"
                     onClick={() => openLightbox(image, 'image')}
@@ -105,7 +105,7 @@ const BuildCard = ({
 
               {/* Render media assets as carousel items */}
               {mediaAssets?.map((asset) => (
-                <CarouselItem key={asset.id} className="basis-1/2">
+                <CarouselItem key={asset.id} className="basis-full pl-4">
                   <div
                     className="relative aspect-video cursor-pointer"
                     onClick={() => openLightbox(asset.url, asset.type, asset.caption)}
