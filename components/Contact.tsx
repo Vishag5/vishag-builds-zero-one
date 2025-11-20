@@ -104,7 +104,7 @@ const Contact = () => {
             className="text-primary hover:text-primary-hover flex items-center"
             asChild
           >
-            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+            <a href="/assets/Vishag T +HighAgency PM+ Resume + 19_11.pdf" target="_blank" rel="noopener noreferrer">
               <FileText className="mr-2 h-4 w-4" />
               Download Résumé
             </a>
