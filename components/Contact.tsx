@@ -39,7 +39,7 @@ const Contact = () => {
             asChild
           >
             <a
-              href="https://linkedin.com/in/vishag-thacharakkal"
+              href="https://www.linkedin.com/in/vishagt/"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center"
@@ -47,7 +47,7 @@ const Contact = () => {
               <Linkedin className="mr-2 h-5 w-5" />
               <div className="text-left">
                 <div className="font-medium">LinkedIn</div>
-                <div className="text-sm opacity-80">Connect with me</div>
+                <div className="text-sm opacity-80">LinkedIn connect with me</div>
               </div>
             </a>
           </Button>
