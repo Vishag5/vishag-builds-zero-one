@@ -4,7 +4,11 @@ import BuildCard from "./BuildCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import CaseStudyDownloadForm from "./CaseStudyDownloadForm";
+// Image paths in public directory
+const attendanceDemo = "/assets/attendance-demo.jpg";
+const attendanceHackathon = "/assets/5%20second%20attendance%20KPH%20Hackathon.jpeg";
 
 interface MediaAsset {
   id: string;
@@ -28,65 +32,118 @@ interface BuildItem {
 }
 
 const ZeroToOneBuilds = () => {
-  // Initialize with saved data or default data
-  const getInitialBuilds = (): BuildItem[] => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem('zeroToOneBuilds');
-      if (saved) {
-        try {
-          return JSON.parse(saved);
-        } catch (e) {
-          console.error('Error parsing saved builds:', e);
-        }
-      }
-    }
+  const [isClient, setIsClient] = useState(false);
+
+  // Initialize with default data - this will be used on both server and client initially to avoid hydration issues
+  const getDefaultBuilds = (): BuildItem[] => {
     return [
     {
       id: "1",
-      title: "Rhythm – ADHD Companion App",
-      subtitle: "Women-first app built during Delta Residency 21-Day Build-in-Public Challenge.",
+      title: "Rhythm – ADHD Companion App (Ai + Healthtech)",
+      subtitle: "AI-powered task-initiation app built during the Sam Altman–backed Delta Residency. Designed through continuous prototyping with ADHD users and psychologists.",
       description:
-        "Built in public, co-designed with ADHD users and psychologists. Captures daily iterations, feedback loops and prototype leaps. Focused on creating a habit-building system specifically designed for neurodivergent women.",
+        `Rhythm is an AI-driven ADHD task-initiation app designed for neurodivergent users who struggle to start tasks.\nRhythm uses calm-tech UX, micro-prompts, and behavior loops to reduce overwhelm and help users build momentum.\n"Duolingo for ADHD" habit-loop system\n`,
       outcome:
-        "Selected for Delta Residency 21-Day Build-in-Public Challenge (Sam Altman-backed).",
-      images: ["/assets/rhythm-landing.jpg", "/assets/rhythm-whiteboard.jpg"],
-      imageAlts: [
-        "Rhythm ADHD companion app landing page interface",
-        "Rhythm app whiteboard session with user journey maps and design thinking sticky notes",
+        `$1,000 MRR OKR set for December 2025,\n165+ early-access testers,\niOS development in progress`,
+      images: [],
+      imageAlts: [],
+      ctaText: "",
+      ctaAction: () => {},
+      mediaAssets: [
+        {
+          id: "rhythm-linkedin",
+          type: "linkedin",
+          url: "<iframe src=\"https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7390880936667824128?compact=1\" height=\"399\" width=\"504\" frameborder=\"0\" allowfullscreen=\"\" title=\"Embedded post\"></iframe>",
+          caption: "Rhythm ADHD App Build-in-Public Journey"
+        },
+        {
+          id: "rhythm-user-feedback",
+          type: "image",
+          url: "/assets/Rhythm%20user%20feedback%20all.png",
+          caption: "Rhythm user feedback all"
+        },
+        {
+          id: "rhythm-image-2",
+          type: "image",
+          url: "/assets/rhythm%20community.jpeg",
+          caption: "Rhythm community engagement"
+        },
+        {
+          id: "rhythm-pdf",
+          type: "pdf",
+          url: "/assets/RHYTHM%20GOLD_USER%20FEEDBACKS%20v2.pdf",
+          caption: "Rhythm User Feedback Report"
+        },
+        {
+          id: "rhythm-image-1",
+          type: "image",
+          url: "/assets/Rhythm%20aswin%20feedback.jpeg",
+          caption: "Rhythm ADHD app user feedback"
+        },
+        {
+          id: "rhythm-poster",
+          type: "image",
+          url: "/assets/Rhythm%20MVP%202%20poster.png",
+          caption: "Rhythm MVP 2 poster"
+        }
       ],
-      ctaText: "View Case Study",
-      ctaAction: () => console.log("View Rhythm case study"),
-      mediaAssets: [],
-      isEditable: true,
+      isEditable: false,
     },
     {
       id: "2",
-      title: "5-Second Attendance App",
-      subtitle: "Micro-SaaS rapid prototype for instantaneous classroom attendance.",
+      title: "5 Second Attendance App - ( Edtech )",
+      subtitle: "Teachers spend 5–10 minutes every class on attendance.That's 25–50 hours of lost teaching time per month across a typical school.",
       description:
-        "Weekend build. Demo shows teacher marking presence in less than five seconds using device proximity. Shared publicly via LinkedIn. Built with focus on minimal friction and maximum efficiency for educators.",
-      outcome: "Featured in LinkedIn build-in-public post.",
-      images: ["/assets/attendance-demo.jpg", "/assets/attendance-demo.jpg"],
-      imageAlts: [
-        "5-Second Attendance App demo showing quick student check-in interface",
-        "Attendance tracking demo on tablet showing class roster",
-      ],
+        "Built a face-recognition prototype that completes attendance in under 5 seconds.\nAchieved a 99% time reduction in live demos (<5s vs 5–10 minutes).\nThe pilot was planned under the PRISM scheme in Calicut, Kerala supported by Pradeep Kumar MLA, to validate classroom readiness at scale.",
+      outcome: "Featured on Kerala Product Hunt (KPH) hackathon",
+      images: [],
+      imageAlts: [],
       ctaText: "View Demo",
-      ctaAction: () => console.log("View 5-Second Attendance demo"),
-      mediaAssets: [],
+      ctaAction: () => window.open("https://www.linkedin.com/posts/vishagt_edtechinnovation-ai-mvp-activity-7383106938341027840-knAY?utm_source=share&utm_medium=member_desktop&rcm=ACoAACDs0h0BveGQZrGBlsHQ_U2oSFfYYCxkrNU", "_blank"),
+      mediaAssets: [
+        {
+          id: "attendance-kph-hackathon",
+          type: "image",
+          url: "/assets/5%20second%20attendance%20KPH%20Hackathon.jpeg",
+          caption: "5-Second Attendance App at KPH Hackathon"
+        },
+        {
+          id: "attendance-linkedin",
+          type: "linkedin",
+          url: '<iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7383106867792764928?compact=1" height="399" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>',
+          caption: "5-Second Attendance App LinkedIn post"
+        },
+        {
+          id: "attendance-user-feedback",
+          type: "image",
+          url: "/assets/5%20Second%20attendance%20app%20user%20feedback.JPG",
+          caption: "5-Second Attendance App user feedback"
+        }
+      ],
       isEditable: true,
     },
     {
       id: "3",
-      title: "LenTrust – Peer Lending MVP",
-      subtitle: "Zero → one lending layer built with Kerala Startup Mission theme.",
+      title: "LenTrust – ( Fintech ) $5.7 Billion",
+      subtitle: "Transforming a $5.7B offline lending ecosystem into a structured, accountable digital workflow",
       description:
-        "Design-led MVP built during Kerala hackathon. Introduced trust-score algorithm + due-date reminders for peer-to-peer micro-lending. Focused on financial inclusion and building trust in peer-to-peer transactions.",
-      outcome: "Launched initial prototype to pilot users.",
-      images: ["/assets/lentrust-dashboard.jpg", "/assets/kerala-hackathon.jpg"],
+        "Engineered a lending workflow that removes awkward follow-ups, builds accountability, and increases on-time repayment.",
+      outcome: "$3,600 innovation grant from Kerala Startup Mission",
+      images: [
+        "/assets/Kerala%20Startup%20mission%20Lentrust.jpeg",
+        "/assets/1_LENTRUST.png",
+        "/assets/2_The-Trust-Gap-in-Everyday-Agreements%20Lentust.png",
+        "/assets/3_A-indian-rupee48000-Crore-Opportunity%20Lentrust.png",
+        "/assets/4_Strong-Market-Validation%20Lentrust.png",
+        "/assets/5_Why-Existing-Solutions-Fall-Short%20Lentrust.png"
+      ],
       imageAlts: [
-        "LenTrust peer lending dashboard showing loan requests and trust scores",
-        "Kerala Startup Mission hackathon team collaboration photo",
+        "Kerala Startup Mission support for Lentrust",
+        "LenTrust logo and concept overview",
+        "The trust gap in everyday agreements explanation",
+        "₹48000 Crore opportunity in peer lending",
+        "Strong market validation for LenTrust",
+        "Why existing solutions fall short"
       ],
       ctaText: "View Case Study",
       ctaAction: () => console.log("View LenTrust case study"),
@@ -96,7 +153,60 @@ const ZeroToOneBuilds = () => {
     ];
   };
 
-  const [builds, setBuilds] = useState<BuildItem[]>(getInitialBuilds());
+  const [builds, setBuilds] = useState<BuildItem[]>(getDefaultBuilds());
+
+  // Only run this on the client side to fetch localStorage data after initial render
+  useEffect(() => {
+    setIsClient(true);
+
+    // Fetch saved data from localStorage only on the client side
+    const saved = typeof window !== 'undefined' ? localStorage.getItem('zeroToOneBuilds') : null;
+    if (saved) {
+      try {
+        const parsedBuilds = JSON.parse(saved);
+        // Reset all builds to default configuration to update with new defaults
+        const resetBuilds = parsedBuilds.map((build: BuildItem) => {
+          // Get the default build configuration for this build ID
+          const defaultBuild = getDefaultBuilds().find(b => b.id === build.id);
+
+          if (build.id === "1") { // Rhythm app
+            return {
+              ...build,
+              ...{
+                // Preserve specific default values for rhythm app
+                ctaText: defaultBuild?.ctaText || "",
+                ctaAction: defaultBuild?.ctaAction || (() => {}),
+              },
+              mediaAssets: defaultBuild?.mediaAssets || [], // Preserve default media assets
+              isEditable: false // Ensure it's not editable
+            };
+          } else {
+            // For other builds, update with new default values while preserving user content
+            return {
+              ...build,
+              ...{
+                title: defaultBuild?.title || build.title,
+                subtitle: defaultBuild?.subtitle || build.subtitle,
+                description: defaultBuild?.description || build.description,
+                outcome: defaultBuild?.outcome || build.outcome,
+                images: defaultBuild?.images || build.images,
+                imageAlts: defaultBuild?.imageAlts || build.imageAlts,
+                ctaText: defaultBuild?.ctaText || build.ctaText,
+                ctaAction: defaultBuild?.ctaAction || build.ctaAction,
+              },
+              mediaAssets: defaultBuild?.mediaAssets || build.mediaAssets || [],
+              isEditable: defaultBuild?.isEditable || build.isEditable,
+            };
+          }
+        });
+        setBuilds(resetBuilds);
+      } catch (e) {
+        console.error('Error parsing saved builds:', e);
+        // If there's an error, use the default builds
+        setBuilds(getDefaultBuilds());
+      }
+    }
+  }, []);
 
   const [editingBuild, setEditingBuild] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState<string>("");
@@ -107,9 +217,9 @@ const ZeroToOneBuilds = () => {
   const [showEmbedInput, setShowEmbedInput] = useState<string | null>(null);
   const [embedCode, setEmbedCode] = useState<string>("");
   const [showSaveButton, setShowSaveButton] = useState<boolean>(false);
-  
+
   // Environment-based edit mode
-  const isEditMode = (process.env.NEXT_PUBLIC_EDIT_MODE === 'true') || (process.env.NODE_ENV === 'development');
+  const isEditMode = process.env.NEXT_PUBLIC_EDIT_MODE === 'true' || process.env.NODE_ENV === 'development';
 
   const handleEditStart = (buildId: string, build: BuildItem) => {
     setEditingBuild(buildId);
@@ -120,22 +230,24 @@ const ZeroToOneBuilds = () => {
   };
 
   const handleEditSave = (buildId: string) => {
-    const updatedBuilds = builds.map(build => 
-      build.id === buildId 
-        ? { 
-            ...build, 
-            title: editTitle, 
-            subtitle: editSubtitle, 
-            description: editDescription, 
-            outcome: editOutcome 
+    const updatedBuilds = builds.map(build =>
+      build.id === buildId
+        ? {
+            ...build,
+            title: editTitle,
+            subtitle: editSubtitle,
+            description: editDescription,
+            outcome: editOutcome
           }
         : build
     );
     setBuilds(updatedBuilds);
-    
-    // Save to localStorage for persistence
-    localStorage.setItem('zeroToOneBuilds', JSON.stringify(updatedBuilds));
-    
+
+    // Save to localStorage for persistence - only on client
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('zeroToOneBuilds', JSON.stringify(updatedBuilds));
+    }
+
     setEditingBuild(null);
     setEditTitle("");
     setEditSubtitle("");
@@ -158,14 +270,21 @@ const ZeroToOneBuilds = () => {
       url: URL.createObjectURL(file),
       caption: ''
     };
-    const updatedBuilds = builds.map(build => 
-      build.id === buildId 
+    const updatedBuilds = builds.map(build =>
+      build.id === buildId
         ? { ...build, mediaAssets: [...(build.mediaAssets || []), mediaAsset] }
         : build
     );
     setBuilds(updatedBuilds);
+
+    // Save to localStorage after update
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('zeroToOneBuilds', JSON.stringify(updatedBuilds));
+    }
+
     setShowSaveButton(true);
-    setShowMediaUpload(null);
+    // Don't close the media upload UI after uploading - let user add more files if needed
+    // setShowMediaUpload(null);
   };
 
   const handleEmbedAdd = (buildId: string) => {
@@ -176,12 +295,18 @@ const ZeroToOneBuilds = () => {
         url: embedCode.trim(),
         caption: ''
       };
-      const updatedBuilds = builds.map(build => 
-        build.id === buildId 
+      const updatedBuilds = builds.map(build =>
+        build.id === buildId
           ? { ...build, mediaAssets: [...(build.mediaAssets || []), mediaAsset] }
           : build
       );
       setBuilds(updatedBuilds);
+
+      // Save to localStorage after update
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('zeroToOneBuilds', JSON.stringify(updatedBuilds));
+      }
+
       setShowSaveButton(true);
       setEmbedCode("");
       setShowEmbedInput(null);
@@ -189,7 +314,9 @@ const ZeroToOneBuilds = () => {
   };
 
   const handleSaveAll = () => {
-    localStorage.setItem('zeroToOneBuilds', JSON.stringify(builds));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('zeroToOneBuilds', JSON.stringify(builds));
+    }
     setShowSaveButton(false);
   };
 
@@ -293,7 +420,7 @@ const ZeroToOneBuilds = () => {
                       </Button>
                     </div>
                   )}
-                  
+
                   {/* Media Upload */}
                   {isEditMode && showMediaUpload === build.id && (
                     <div className="mb-4 p-4 border rounded-lg bg-muted/50">
@@ -304,11 +431,18 @@ const ZeroToOneBuilds = () => {
                           const file = e.target.files?.[0];
                           if (file) {
                             handleMediaUpload(build.id, file);
+                            // Clear the input to allow uploading the same file again if needed
+                            e.target.value = '';
                           }
                         }}
                         className="mb-2"
                       />
-                      <p className="text-xs text-muted-foreground">
+                      <div className="flex gap-2">
+                        <Button size="sm" variant="outline" onClick={() => setShowMediaUpload(null)}>
+                          Close
+                        </Button>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-2">
                         Upload photos or videos
                       </p>
                     </div>
@@ -338,27 +472,27 @@ const ZeroToOneBuilds = () => {
                   )}
 
                   {/* Replace default images with media assets */}
-                  {build.mediaAssets && build.mediaAssets.length > 0 ? (
+                  {/* {build.mediaAssets && build.mediaAssets.length > 0 ? (
                     <div className="mb-4">
                       <div className="flex gap-4 overflow-x-auto pb-2">
                         {build.mediaAssets.map((media) => (
                           <div key={media.id} className="relative flex-shrink-0">
                             {media.type === 'image' ? (
-                              <img 
-                                src={media.url} 
-                                alt={media.caption || 'Media asset'} 
+                              <img
+                                src={media.url}
+                                alt={media.caption || 'Media asset'}
                                 className="w-[300px] h-[200px] object-cover rounded-lg border"
                               />
                             ) : media.type === 'video' ? (
-                              <video 
-                                src={media.url} 
-                                controls 
+                              <video
+                                src={media.url}
+                                controls
                                 className="w-[300px] h-[200px] object-cover rounded-lg border"
                               />
                             ) : (
-                              <div 
+                              <div
                                 className="w-[300px] h-[200px] rounded-lg border overflow-hidden"
-                                dangerouslySetInnerHTML={{ __html: media.url }} 
+                                dangerouslySetInnerHTML={{ __html: media.url }}
                               />
                             )}
                             {media.caption && (
@@ -370,13 +504,17 @@ const ZeroToOneBuilds = () => {
                                 size="sm"
                                 className="absolute top-2 right-2"
                                 onClick={() => {
-                                  const updatedBuilds = builds.map(b => 
-                                    b.id === build.id 
+                                  const updatedBuilds = builds.map(b =>
+                                    b.id === build.id
                                       ? { ...b, mediaAssets: b.mediaAssets?.filter(m => m.id !== media.id) || [] }
                                       : b
                                   );
                                   setBuilds(updatedBuilds);
-                                  localStorage.setItem('zeroToOneBuilds', JSON.stringify(updatedBuilds));
+
+                                  // Save to localStorage after update
+                                  if (typeof window !== 'undefined') {
+                                    localStorage.setItem('zeroToOneBuilds', JSON.stringify(updatedBuilds));
+                                  }
                                 }}
                               >
                                 ×
@@ -386,13 +524,18 @@ const ZeroToOneBuilds = () => {
                         ))}
                       </div>
                     </div>
-                  ) : null}
+                  ) : null} */}
 
                   <BuildCard {...build} />
                 </div>
               )}
             </div>
           ))}
+        </div>
+
+        {/* Case Studies Section */}
+        <div className="mt-24 pt-12 border-t border-border">
+          <CaseStudyDownloadForm />
         </div>
       </div>
     </section>
