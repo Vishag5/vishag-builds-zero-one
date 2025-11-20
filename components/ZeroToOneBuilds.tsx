@@ -12,7 +12,7 @@ const attendanceHackathon = "/assets/5%20second%20attendance%20KPH%20Hackathon.j
 
 interface MediaAsset {
   id: string;
-  type: 'image' | 'video' | 'linkedin';
+  type: 'image' | 'video' | 'linkedin' | 'pdf';
   url: string;
   caption?: string;
 }
