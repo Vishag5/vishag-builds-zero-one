@@ -26,12 +26,32 @@ interface MediaAsset {
   caption?: string;
 }
 
+// Type definitions for untyped JS data
+interface UntypedTimelineItem {
+  day: number;
+  date: string;
+  title: string;
+  description: string | null;
+  assetEmbed?: string;
+  assetType?: string;
+  assetUpload?: string | null;
+  isEditable?: boolean;
+  mediaAssets?: UntypedMediaAsset[];
+}
+
+interface UntypedMediaAsset {
+  id: string | number;
+  type: string;
+  url: string;
+  caption?: string;
+}
+
 const BuildTimeline = () => {
   // Coerce untyped JS data into our strict TS types
-  const toTyped = (items: unknown[]): TimelineItem[] =>
-    (items || []).map((item: unknown) => ({
-      ...(item as TimelineItem),
-      mediaAssets: ((item as TimelineItem).mediaAssets || []).map((m: unknown): MediaAsset => ({
+  const toTyped = (items: UntypedTimelineItem[]): TimelineItem[] =>
+    (items || []).map((item: UntypedTimelineItem) => ({
+      ...item,
+      mediaAssets: (item.mediaAssets || []).map((m: UntypedMediaAsset): MediaAsset => ({
         id: String(m.id),
         url: String(m.url),
         caption: m.caption !== undefined ? String(m.caption) : undefined,
@@ -48,11 +68,11 @@ const BuildTimeline = () => {
           return toTyped(JSON.parse(saved));
         } catch (e) {
           console.error('Failed to parse saved build journey:', e);
-          return toTyped(defaultBuildJourney as unknown[]);
+          return toTyped(defaultBuildJourney as UntypedTimelineItem[]);
         }
       }
     }
-    return toTyped(defaultBuildJourney);
+    return toTyped(defaultBuildJourney as UntypedTimelineItem[]);
   });
   
   const [editingDay, setEditingDay] = useState<number | null>(null);
@@ -168,7 +188,7 @@ const BuildTimeline = () => {
   const handleResetData = () => {
     if (confirm('Are you sure you want to reset all changes? This will restore the original data.')) {
       localStorage.removeItem('buildJourney');
-      setTimelineItems(toTyped(defaultBuildJourney as unknown[]));
+      setTimelineItems(toTyped(defaultBuildJourney as UntypedTimelineItem[]));
     }
   };
 
