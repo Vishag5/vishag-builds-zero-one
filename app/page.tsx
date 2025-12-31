@@ -1,8 +1,10 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import ZeroToOneBuilds from "@/components/ZeroToOneBuilds";
+import Experience from "@/components/Experience";
 import CaseStudies from "@/components/CaseStudies";
 import BuildTimeline from "@/components/BuildTimeline";
+import Skills from "@/components/Skills";
 import About from "@/components/About";
 import Certifications from "@/components/Certifications";
 import Testimonials from "@/components/Testimonials";
@@ -15,8 +17,10 @@ export default function Home() {
       <Navbar />
       <Hero />
       <ZeroToOneBuilds />
+      <Experience />
       <CaseStudies />
       <BuildTimeline />
+      <Skills />
       <About />
       <Certifications />
       <Testimonials />

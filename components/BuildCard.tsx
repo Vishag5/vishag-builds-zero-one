@@ -22,8 +22,10 @@ interface BuildCardProps {
   images: string[];
   imageAlts: string[];
   mediaAssets?: MediaAsset[];
-  ctaText: string;
-  ctaAction: () => void;
+  ctaText?: string;
+  ctaAction?: () => void;
+  secondaryCtaText?: string;
+  secondaryCtaAction?: () => void;
   isEditable?: boolean;
 }
 
@@ -38,6 +40,8 @@ const BuildCard = ({
   mediaAssets = [],
   ctaText,
   ctaAction,
+  secondaryCtaText,
+  secondaryCtaAction,
   isEditable = false,
 }: BuildCardProps) => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -224,15 +228,29 @@ const BuildCard = ({
         </p>
       </div>
 
-      {ctaText && (
-        <Button
-          onClick={ctaAction}
-          variant="outline"
-          className="border-primary text-primary hover:bg-primary/10 group"
-        >
-          {ctaText}
-          <ExternalLink className="ml-2 h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-        </Button>
+      {(ctaText || secondaryCtaText) && (
+        <div className="flex flex-col sm:flex-row gap-3">
+          {ctaText && (
+            <Button
+              onClick={ctaAction}
+              variant="outline"
+              className="border-primary text-primary hover:bg-primary/10 group"
+            >
+              {ctaText}
+              <ExternalLink className="ml-2 h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+            </Button>
+          )}
+          {secondaryCtaText && (
+            <Button
+              onClick={secondaryCtaAction}
+              variant="outline"
+              className="border-primary text-primary hover:bg-primary/10 group"
+            >
+              {secondaryCtaText}
+              <ExternalLink className="ml-2 h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+            </Button>
+          )}
+        </div>
       )}
     </div>
   );

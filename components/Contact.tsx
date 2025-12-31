@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Mail, Linkedin, Github, FileText, MessageCircle, Calendar } from "lucide-react";
+import { Mail, Linkedin, Github, FileText, MessageCircle, Calendar, Phone } from "lucide-react";
 import ProjectInquiryForm from './ProjectInquiryForm';
 
 const Contact = () => {
@@ -17,7 +17,7 @@ const Contact = () => {
         </div>
 
         {/* Contact Options */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           <Button
             size="lg"
             className="bg-gradient-to-r from-primary to-primary-hover hover:opacity-90 transition-opacity group flex flex-col h-32"
@@ -58,8 +58,23 @@ const Contact = () => {
             className="border-primary text-primary hover:bg-primary/10 group flex flex-col h-32"
             asChild
           >
+            <a href="tel:+917012938275" className="flex items-center justify-center">
+              <Phone className="mr-2 h-5 w-5" />
+              <div className="text-left">
+                <div className="font-medium">Call Me</div>
+                <div className="text-sm opacity-80">+91 7012938275</div>
+              </div>
+            </a>
+          </Button>
+
+          <Button
+            size="lg"
+            variant="outline"
+            className="border-primary text-primary hover:bg-primary/10 group flex flex-col h-32"
+            asChild
+          >
             <a
-              href="https://calendly.com/vishag-thacharakkal"
+              href="https://calendly.com/info-vishag/discovery-call"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center"

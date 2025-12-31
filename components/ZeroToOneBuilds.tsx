@@ -25,8 +25,10 @@ interface BuildItem {
   outcome: string;
   images: string[];
   imageAlts: string[];
-  ctaText: string;
-  ctaAction: () => void;
+  ctaText?: string;
+  ctaAction?: () => void;
+  secondaryCtaText?: string;
+  secondaryCtaAction?: () => void;
   mediaAssets?: MediaAsset[];
   isEditable?: boolean;
 }
@@ -47,8 +49,8 @@ const ZeroToOneBuilds = () => {
         `$1,000 MRR OKR set for December 2025,\n165+ early-access testers,\niOS development in progress`,
       images: [],
       imageAlts: [],
-      ctaText: "",
-      ctaAction: () => {},
+      ctaText: "View MVP",
+      ctaAction: () => window.open("https://rhythm-webapp.vercel.app/", "_blank"),
       mediaAssets: [
         {
           id: "rhythm-linkedin",
@@ -98,8 +100,10 @@ const ZeroToOneBuilds = () => {
       outcome: "Featured on Kerala Product Hunt (KPH) hackathon",
       images: [],
       imageAlts: [],
-      ctaText: "View Demo",
-      ctaAction: () => window.open("https://www.linkedin.com/posts/vishagt_edtechinnovation-ai-mvp-activity-7383106938341027840-knAY?utm_source=share&utm_medium=member_desktop&rcm=ACoAACDs0h0BveGQZrGBlsHQ_U2oSFfYYCxkrNU", "_blank"),
+      ctaText: "View MVP",
+      ctaAction: () => window.open("https://attendanceem.netlify.app/", "_blank"),
+      secondaryCtaText: "View Demo",
+      secondaryCtaAction: () => window.open("https://www.linkedin.com/feed/update/urn:li:activity:7383106938341027840", "_blank"),
       mediaAssets: [
         {
           id: "attendance-kph-hackathon",
@@ -176,9 +180,29 @@ const ZeroToOneBuilds = () => {
                 // Preserve specific default values for rhythm app
                 ctaText: defaultBuild?.ctaText || "",
                 ctaAction: defaultBuild?.ctaAction || (() => {}),
+                secondaryCtaText: defaultBuild?.secondaryCtaText,
+                secondaryCtaAction: defaultBuild?.secondaryCtaAction,
               },
               mediaAssets: defaultBuild?.mediaAssets || [], // Preserve default media assets
               isEditable: false // Ensure it's not editable
+            };
+          } else if (build.id === "2") { // 5-Second Attendance app
+            return {
+              ...build,
+              ...{
+                title: defaultBuild?.title || build.title,
+                subtitle: defaultBuild?.subtitle || build.subtitle,
+                description: defaultBuild?.description || build.description,
+                outcome: defaultBuild?.outcome || build.outcome,
+                images: defaultBuild?.images || build.images,
+                imageAlts: defaultBuild?.imageAlts || build.imageAlts,
+                ctaText: defaultBuild?.ctaText || build.ctaText,
+                ctaAction: defaultBuild?.ctaAction || build.ctaAction,
+                secondaryCtaText: defaultBuild?.secondaryCtaText || build.secondaryCtaText,
+                secondaryCtaAction: defaultBuild?.secondaryCtaAction || build.secondaryCtaAction,
+              },
+              mediaAssets: defaultBuild?.mediaAssets || build.mediaAssets || [],
+              isEditable: defaultBuild?.isEditable || build.isEditable,
             };
           } else {
             // For other builds, update with new default values while preserving user content
