@@ -48,7 +48,6 @@ interface UntypedMediaAsset {
 
 const BuildTimeline = () => {
   // Coerce untyped JS data into our strict TS types
-<<<<<<< HEAD
   const toTyped = (items: UntypedTimelineItem[]): TimelineItem[] =>
     (items || []).map((item: UntypedTimelineItem) => ({
       ...item,
@@ -59,21 +58,6 @@ const BuildTimeline = () => {
         // Normalize to the allowed union values
         type: m.type === 'video' ? 'video' : 'image',
       })),
-=======
-  const toTyped = (items: unknown[]): TimelineItem[] =>
-    (items || []).map((item: unknown) => ({
-      ...(item as TimelineItem),
-      mediaAssets: ((item as TimelineItem).mediaAssets || []).map((m: unknown): MediaAsset => {
-        const media = m as Record<string, unknown>;
-        return {
-          id: String(media.id),
-          url: String(media.url),
-          caption: media.caption !== undefined ? String(media.caption) : undefined,
-          // Normalize to the allowed union values
-          type: media.type === 'video' ? 'video' : 'image',
-        };
-      }),
->>>>>>> 24c2c4b (build errorfixed)
     }));
   // Load from localStorage or use default data
   const [timelineItems, setTimelineItems] = useState<TimelineItem[]>(() => {
