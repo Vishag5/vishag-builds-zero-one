@@ -48,16 +48,19 @@ interface UntypedMediaAsset {
 
 const BuildTimeline = () => {
   // Coerce untyped JS data into our strict TS types
-  const toTyped = (items: UntypedTimelineItem[]): TimelineItem[] =>
-    (items || []).map((item: UntypedTimelineItem) => ({
-      ...item,
-      mediaAssets: (item.mediaAssets || []).map((m: UntypedMediaAsset): MediaAsset => ({
-        id: String(m.id),
-        url: String(m.url),
-        caption: m.caption !== undefined ? String(m.caption) : undefined,
-        // Normalize to the allowed union values
-        type: m.type === 'video' ? 'video' : 'image',
-      })),
+  const toTyped = (items: unknown[]): TimelineItem[] =>
+    (items || []).map((item: unknown) => ({
+      ...(item as TimelineItem),
+      mediaAssets: ((item as TimelineItem).mediaAssets || []).map((m: unknown): MediaAsset => {
+        const media = m as Record<string, unknown>;
+        return {
+          id: String(media.id),
+          url: String(media.url),
+          caption: media.caption !== undefined ? String(media.caption) : undefined,
+          // Normalize to the allowed union values
+          type: media.type === 'video' ? 'video' : 'image',
+        };
+      }),
     }));
   // Load from localStorage or use default data
   const [timelineItems, setTimelineItems] = useState<TimelineItem[]>(() => {
@@ -260,17 +263,17 @@ const BuildTimeline = () => {
 
         <div className="relative">
           {/* Vertical line */}
-          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary to-accent"></div>
+          <div className="absolute left-2.5 md:left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary to-accent"></div>
 
           <div className="space-y-12">
             {timelineItems.map((item, index) => (
               <div
                 key={index}
-                className="relative pl-20 animate-slide-up"
+                className="relative pl-8 md:pl-20 animate-slide-up"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 {/* Circle marker */}
-                <div className="absolute left-6 w-5 h-5 rounded-full bg-primary border-4 border-white shadow-soft"></div>
+                <div className="absolute left-0 md:left-6 w-5 h-5 rounded-full bg-primary border-4 border-white shadow-soft"></div>
 
                 <div className="bg-card rounded-xl p-6 shadow-soft hover-lift">
                   <div className="flex justify-between items-start mb-2">
@@ -369,9 +372,13 @@ const BuildTimeline = () => {
                     </div>
                   )}
                   {item.assetEmbed && item.assetType === "iframe" && (
-                    <div className="mt-4" dangerouslySetInnerHTML={{ __html: item.assetEmbed }} />
+                    <div className="mt-4 w-full max-w-[504px]">
+                      <div 
+                        className="relative w-full overflow-hidden rounded-lg border bg-muted/20 shadow-sm"
+                        dangerouslySetInnerHTML={{ __html: item.assetEmbed }} 
+                      />
+                    </div>
                   )}
-
                   {/* Media Assets - Show below embeds */}
                   {item.mediaAssets && item.mediaAssets.length > 0 && (
                     <div className="mt-4 space-y-3">
