@@ -22,8 +22,10 @@ interface BuildCardProps {
   images: string[];
   imageAlts: string[];
   mediaAssets?: MediaAsset[];
-  ctaText: string;
-  ctaAction: () => void;
+  ctaText?: string;
+  ctaAction?: () => void;
+  secondaryCtaText?: string;
+  secondaryCtaAction?: () => void;
   isEditable?: boolean;
 }
 
@@ -38,11 +40,13 @@ const BuildCard = ({
   mediaAssets = [],
   ctaText,
   ctaAction,
+  secondaryCtaText,
+  secondaryCtaAction,
   isEditable = false,
 }: BuildCardProps) => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxContent, setLightboxContent] = useState<{url: string, type: string, caption?: string} | null>(null);
-  const carouselApi = useRef<any>(null);
+  const carouselApi = useRef<{scrollTo: (index: number) => void} | null>(null);
 
   const openLightbox = (url: string, type: string, caption?: string) => {
     setLightboxContent({ url, type, caption });
@@ -82,7 +86,7 @@ const BuildCard = ({
           <Carousel
             opts={{ loop: true }}
             className="w-full"
-            setApi={(api) => {
+            setApi={(api: {scrollTo: (index: number) => void} | null) => {
               carouselApi.current = api;
             }}
           >
@@ -224,16 +228,26 @@ const BuildCard = ({
         </p>
       </div>
 
-      {ctaText && (
-        <Button
-          onClick={ctaAction}
-          variant="outline"
-          className="border-primary text-primary hover:bg-primary/10 group"
-        >
-          {ctaText}
-          <ExternalLink className="ml-2 h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-        </Button>
-      )}
+      <div className="flex gap-3 flex-wrap">
+        {secondaryCtaText && secondaryCtaAction && (
+          <Button
+            onClick={secondaryCtaAction}
+            variant="outline"
+          >
+            {secondaryCtaText}
+          </Button>
+        )}
+        {ctaText && ctaAction && (
+          <Button
+            onClick={ctaAction}
+            variant="outline"
+            className="border-primary text-primary hover:bg-primary/10 group"
+          >
+            {ctaText}
+            <ExternalLink className="ml-2 h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+          </Button>
+        )}
+      </div>
     </div>
   );
 };
