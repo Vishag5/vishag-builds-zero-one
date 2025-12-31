@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ExternalLink, X } from "lucide-react";
 import LinkedInEmbed from "./LinkedInEmbed";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel";
 import { useState, useEffect, useRef } from "react";
 
 interface MediaAsset {
@@ -46,7 +46,7 @@ const BuildCard = ({
 }: BuildCardProps) => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxContent, setLightboxContent] = useState<{url: string, type: string, caption?: string} | null>(null);
-  const carouselApi = useRef<any>(null);
+  const carouselApi = useRef<CarouselApi | null>(null);
 
   const openLightbox = (url: string, type: string, caption?: string) => {
     setLightboxContent({ url, type, caption });
