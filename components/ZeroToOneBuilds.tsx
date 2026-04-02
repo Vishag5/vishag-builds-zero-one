@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState } from "react";
-import CaseStudyDownloadForm from "./CaseStudyDownloadForm";
 // Image paths in public directory
 const attendanceDemo = "/assets/attendance-demo.jpg";
 const attendanceHackathon = "/assets/5%20second%20attendance%20KPH%20Hackathon.jpeg";
@@ -53,6 +52,18 @@ const ZeroToOneBuilds = () => {
       ctaAction: () => window.open("https://rhythm-webapp.vercel.app/", "_blank"),
       mediaAssets: [
         {
+          id: "rhythm-analytics",
+          type: "image",
+          url: "/assets/Rhythm%20product%20analytics.JPG",
+          caption: "Rhythm Post-Launch Analytics"
+        },
+        {
+          id: "rhythm-pdf",
+          type: "pdf",
+          url: "/assets/RHYTHM%20GOLD_USER%20FEEDBACKS%20v2.pdf",
+          caption: "Rhythm User Feedback Report"
+        },
+        {
           id: "rhythm-linkedin",
           type: "linkedin",
           url: "<iframe src=\"https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7390880936667824128?compact=1\" height=\"399\" width=\"504\" frameborder=\"0\" allowfullscreen=\"\" title=\"Embedded post\"></iframe>",
@@ -69,12 +80,6 @@ const ZeroToOneBuilds = () => {
           type: "image",
           url: "/assets/rhythm%20community.jpeg",
           caption: "Rhythm community engagement"
-        },
-        {
-          id: "rhythm-pdf",
-          type: "pdf",
-          url: "/assets/RHYTHM%20GOLD_USER%20FEEDBACKS%20v2.pdf",
-          caption: "Rhythm User Feedback Report"
         },
         {
           id: "rhythm-image-1",
@@ -549,17 +554,11 @@ const ZeroToOneBuilds = () => {
                       </div>
                     </div>
                   ) : null} */}
-
-                  <BuildCard {...build} />
+                  <BuildCard {...build} index={index} />
                 </div>
               )}
             </div>
           ))}
-        </div>
-
-        {/* Case Studies Section */}
-        <div className="mt-24 pt-12 border-t border-border">
-          <CaseStudyDownloadForm />
         </div>
       </div>
     </section>

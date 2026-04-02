@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import ProductSolves from "@/components/ProductSolves";
 import ZeroToOneBuilds from "@/components/ZeroToOneBuilds";
 import Experience from "@/components/Experience";
 import CaseStudies from "@/components/CaseStudies";
@@ -16,9 +17,10 @@ export default function Home() {
     <div className="min-h-screen">
       <Navbar />
       <Hero />
+      <ProductSolves />
       <ZeroToOneBuilds />
-      <Experience />
       <CaseStudies />
+      <Experience />
       <BuildTimeline />
       <Skills />
       <About />

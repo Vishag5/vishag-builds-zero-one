@@ -27,6 +27,7 @@ interface BuildCardProps {
   secondaryCtaText?: string;
   secondaryCtaAction?: () => void;
   isEditable?: boolean;
+  index?: number;
 }
 
 const BuildCard = ({
@@ -43,6 +44,7 @@ const BuildCard = ({
   secondaryCtaText,
   secondaryCtaAction,
   isEditable = false,
+  index = 0,
 }: BuildCardProps) => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxContent, setLightboxContent] = useState<{url: string, type: string, caption?: string} | null>(null);
@@ -61,14 +63,10 @@ const BuildCard = ({
   // Find the index of the video file to set as the default view
   useEffect(() => {
     if (carouselApi.current && mediaAssets) {
-      // Find the index of the first video asset
+      // Prioritize video if it exists, otherwise start exactly at index 0 (the beginning)
       const videoIndex = mediaAssets.findIndex(asset => asset.type === 'video');
+      const targetIndex = videoIndex !== -1 ? videoIndex : 0;
 
-      // If there's a video and the carousel is ready, go to that slide
-      // If no video, just go to the second slide (index 1) as requested
-      const targetIndex = videoIndex !== -1 ? videoIndex : 1;
-
-      // Wait a moment for the carousel to initialize fully
       setTimeout(() => {
         carouselApi.current?.scrollTo(targetIndex);
       }, 100);
@@ -76,13 +74,12 @@ const BuildCard = ({
   }, [mediaAssets]);
 
   return (
-    <div className="bg-card rounded-xl p-4 sm:p-6 md:p-8 shadow-soft hover-lift">
-      <h3 className="text-2xl sm:text-3xl font-bold mb-2">{title}</h3>
-      <p className="text-base sm:text-lg text-muted-foreground mb-4 sm:mb-6">{subtitle}</p>
-
-      {/* Media carousel - only render if there's content */}
-      { (images.length > 0 || mediaAssets?.length > 0) && (
-        <div className="mb-4 sm:mb-6">
+    <div className="bg-card rounded-2xl p-6 sm:p-8 md:p-10 shadow-soft border hover-lift flex flex-col lg:grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      
+      {/* Media Column (60%) */}
+      <div className={`col-span-12 lg:col-span-7 w-full h-full flex items-center ${index % 2 === 0 ? 'lg:order-last' : 'lg:order-first'}`}>
+        { (images.length > 0 || mediaAssets?.length > 0) && (
+          <div className="w-full">
           <Carousel
             opts={{ loop: true }}
             className="w-full"
@@ -95,7 +92,7 @@ const BuildCard = ({
               {images.map((image, index) => (
                 <CarouselItem key={`img-${index}`} className="basis-full pl-4">
                   <div
-                    className="relative aspect-video cursor-pointer"
+                    className="relative w-full h-[400px] lg:h-[480px] cursor-pointer group"
                     onClick={() => openLightbox(image, 'image')}
                   >
                     <img
@@ -111,7 +108,7 @@ const BuildCard = ({
               {mediaAssets?.map((asset) => (
                 <CarouselItem key={asset.id} className="basis-full pl-4">
                   <div
-                    className="relative aspect-video cursor-pointer"
+                    className="relative w-full h-[400px] lg:h-[480px] cursor-pointer group"
                     onClick={() => openLightbox(asset.url, asset.type, asset.caption)}
                   >
                     {asset.type === 'linkedin' ? (
@@ -119,11 +116,13 @@ const BuildCard = ({
                         <LinkedInEmbed url={asset.url} className="w-full h-full" />
                       </div>
                     ) : asset.type === 'pdf' ? (
-                      <div className="w-full h-full rounded-lg overflow-hidden border">
+                      <div className="w-full h-full rounded-2xl overflow-hidden border bg-white shadow-sm flex flex-col relative group">
+                        <div className="absolute inset-0 z-10 hidden group-hover:block bg-black/5 transition-colors cursor-pointer" />
                         <iframe
-                          src={asset.url}
-                          className="w-full h-full"
+                          src={`${asset.url}#toolbar=0&navpanes=0&scrollbar=0&view=Fit`}
+                          className="w-full h-full pointer-events-none"
                           title={asset.caption}
+                          scrolling="no"
                         />
                       </div>
                     ) : (
@@ -157,6 +156,7 @@ const BuildCard = ({
           </Carousel>
         </div>
       )}
+      </div>
 
       {/* Lightbox Overlay */}
       {lightboxOpen && lightboxContent && (
@@ -196,10 +196,10 @@ const BuildCard = ({
             )}
 
             {lightboxContent.type === 'pdf' && (
-              <div className="w-full h-[75vh] cursor-pointer" onClick={closeLightbox}>
+              <div className="w-full h-[85vh] md:h-[90vh] cursor-pointer" onClick={closeLightbox}>
                 <iframe
-                  src={lightboxContent.url}
-                  className="w-full h-full rounded-lg"
+                  src={`${lightboxContent.url}#view=Fit`}
+                  className="w-full h-full rounded-xl bg-white shadow-2xl"
                   title={lightboxContent.caption}
                 />
               </div>
@@ -220,33 +220,41 @@ const BuildCard = ({
         </div>
       )}
 
-      <p className="text-base mb-4 leading-relaxed">{description}</p>
+      {/* Text Column (40%) */}
+      <div className={`col-span-12 lg:col-span-5 flex flex-col justify-center h-full w-full ${index % 2 === 0 ? 'lg:order-first' : 'lg:order-last'}`}>
+        <h3 className="text-3xl lg:text-4xl font-bold mb-3">{title}</h3>
+        <p className="text-lg text-muted-foreground mb-6">{subtitle}</p>
+        
+        <p className="text-[1rem] text-slate-600 leading-relaxed mb-8">{description}</p>
 
-      <div className="bg-accent/10 border border-accent/20 rounded-lg p-4 mb-6">
-        <p className="text-sm font-semibold text-accent-foreground">
-          {outcome}
-        </p>
-      </div>
+        <div className="bg-accent/10 border border-accent/20 rounded-xl p-5 mb-8">
+          <p className="text-sm font-semibold text-accent-foreground flex items-start gap-2">
+            <span className="text-lg leading-none block pt-0.5">⚡</span>
+            <span className="leading-relaxed">{outcome}</span>
+          </p>
+        </div>
 
-      <div className="flex gap-3 flex-wrap">
-        {secondaryCtaText && secondaryCtaAction && (
-          <Button
-            onClick={secondaryCtaAction}
-            variant="outline"
-          >
-            {secondaryCtaText}
-          </Button>
-        )}
-        {ctaText && ctaAction && (
-          <Button
-            onClick={ctaAction}
-            variant="outline"
-            className="border-primary text-primary hover:bg-primary/10 group"
-          >
-            {ctaText}
-            <ExternalLink className="ml-2 h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-          </Button>
-        )}
+        <div className="flex gap-4 flex-wrap mt-auto">
+          {secondaryCtaText && secondaryCtaAction && (
+            <Button
+              onClick={secondaryCtaAction}
+              variant="outline"
+              className="rounded-full px-6"
+            >
+              {secondaryCtaText}
+            </Button>
+          )}
+          {ctaText && ctaAction && (
+            <Button
+              onClick={ctaAction}
+              variant="outline"
+              className="border-primary text-primary hover:bg-primary/5 rounded-full px-6 group shadow-sm"
+            >
+              {ctaText}
+              <ExternalLink className="ml-2 h-4 w-4 opacity-70 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );

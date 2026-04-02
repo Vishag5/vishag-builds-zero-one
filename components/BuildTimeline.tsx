@@ -198,10 +198,10 @@ const BuildTimeline = () => {
   return (
     <section id="timeline" className="section-padding bg-gradient-to-b from-[hsl(var(--muted))] to-white">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-16 animate-fade-in">
-          <Badge className="mb-4 bg-primary text-primary-foreground">
+        <div className="text-center mb-16 animate-fade-in flex flex-col items-center">
+          <span className="inline-block px-8 py-3 mb-6 text-[0.95rem] font-extrabold tracking-[0.15em] text-primary uppercase bg-white/70 backdrop-blur-xl border-2 border-white/90 shadow-lg rounded-full">
             Building in Public
-          </Badge>
+          </span>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             Delta Residency & Beyond
           </h2>

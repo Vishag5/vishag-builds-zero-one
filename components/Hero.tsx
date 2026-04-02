@@ -180,19 +180,19 @@ const Hero: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <Button
                 size="lg"
-                onClick={() => scrollToSection("builds")}
-                className="bg-gradient-to-r from-primary to-primary-hover hover:opacity-90 transition-opacity group"
+                onClick={() => scrollToSection("assignments")}
+                className="bg-gradient-to-r from-primary to-primary-hover hover:opacity-90 transition-opacity group font-bold tracking-wide shadow-md"
               >
-                See My Work
+                Explore Product Solves
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button
                 size="lg"
                 variant="outline"
-                onClick={() => scrollToSection("timeline")}
-                className="border-primary text-primary hover:bg-primary/10"
+                onClick={() => scrollToSection("builds")}
+                className="border-primary/30 text-primary hover:bg-primary/5 hover:border-primary font-bold tracking-wide shadow-sm transition-all"
               >
-                Follow My Build Journey
+                View 0→1 Executions
               </Button>
             </div>
           </div>

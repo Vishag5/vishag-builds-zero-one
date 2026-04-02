@@ -38,28 +38,34 @@ const Navbar = () => {
             Vishag
           </button>
 
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-6">
+            <button
+              onClick={() => scrollToSection("assignments")}
+              className="text-foreground/70 hover:text-foreground transition-colors font-semibold text-[0.9rem] tracking-wide"
+            >
+              Product Solves
+            </button>
             <button
               onClick={() => scrollToSection("builds")}
-              className="text-foreground/70 hover:text-foreground transition-colors font-medium"
+              className="text-foreground/70 hover:text-foreground transition-colors font-semibold text-[0.9rem] tracking-wide"
             >
-              Work
+              Zero to One
             </button>
             <button
               onClick={() => scrollToSection("case-studies")}
-              className="text-foreground/70 hover:text-foreground transition-colors font-medium"
+              className="text-foreground/70 hover:text-foreground transition-colors font-semibold text-[0.9rem] tracking-wide"
             >
               Case Studies
             </button>
             <button
               onClick={() => scrollToSection("about")}
-              className="text-foreground/70 hover:text-foreground transition-colors font-medium"
+              className="text-foreground/70 hover:text-foreground transition-colors font-semibold text-[0.9rem] tracking-wide"
             >
               About
             </button>
             <button
               onClick={() => scrollToSection("contact")}
-              className="text-foreground/70 hover:text-foreground transition-colors font-medium"
+              className="text-foreground/70 hover:text-foreground transition-colors font-semibold text-[0.9rem] tracking-wide"
             >
               Contact
             </button>
